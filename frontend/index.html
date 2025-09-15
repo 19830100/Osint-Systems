@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osint System - Sistema de Transparência de Folha de Pagamento</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">Osint System</h1>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#employees">Funcionários</a></li>
+                    <li><a href="#reports">Relatórios</a></li>
+                    <li><a href="#login">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <div class="container">
+                <h2>Portal de Transparência de Folha de Pagamento</h2>
+                <p>Bem-vindo ao Osint System, seu sistema de transparência para consulta de informações de folha de pagamento.</p>
+                
+                <div class="search-container">
+                    <h3>Consultar Funcionário</h3>
+                    <div class="search-form">
+                        <input type="text" id="searchInput" placeholder="Digite o nome do funcionário ou matrícula">
+                        <button onclick="searchEmployee()">Buscar</button>
+                    </div>
+                </div>
+
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </section>
+
+        <!-- Employees Section -->
+        <section id="employees" class="section hidden">
+            <div class="container">
+                <h2>Gestão de Funcionários</h2>
+                
+                <div class="employee-controls">
+                    <button onclick="showAddEmployeeForm()" class="btn-primary">Adicionar Funcionário</button>
+                </div>
+
+                <div id="addEmployeeForm" class="form-container hidden">
+                    <h3>Adicionar Novo Funcionário</h3>
+                    <form onsubmit="addEmployee(event)">
+                        <div class="form-group">
+                            <label for="name">Nome Completo:</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registration">Matrícula:</label>
+                            <input type="text" id="registration" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="position">Cargo:</label>
+                            <input type="text" id="position" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="salary">Salário:</label>
+                            <input type="number" id="salary" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Departamento:</label>
+                            <input type="text" id="department" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Salvar</button>
+                            <button type="button" onclick="hideAddEmployeeForm()" class="btn-secondary">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="employeesList" class="employees-list"></div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="section hidden">
+            <div class="container">
+                <h2>Relatórios de Folha de Pagamento</h2>
+                
+                <div class="reports-controls">
+                    <div class="form-group">
+                        <label for="reportMonth">Mês:</label>
+                        <select id="reportMonth">
+                            <option value="01">Janeiro</option>
+                            <option value="02">Fevereiro</option>
+                            <option value="03">Março</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Maio</option>
+                            <option value="06">Junho</option>
+                            <option value="07">Julho</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportYear">Ano:</label>
+                        <select id="reportYear">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+                    <button onclick="generateReport()" class="btn-primary">Gerar Relatório</button>
+                </div>
+
+                <div id="reportResults" class="report-results"></div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section hidden">
+            <div class="container">
+                <h2>Login do Sistema</h2>
+                
+                <div class="login-form">
+                    <form onsubmit="login(event)">
+                        <div class="form-group">
+                            <label for="username">Usuário:</label>
+                            <input type="text" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Senha:</label>
+                            <input type="password" id="password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Entrar</button>
+                    </form>
+                </div>
+
+                <div id="loginMessage" class="message"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Osint System. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
