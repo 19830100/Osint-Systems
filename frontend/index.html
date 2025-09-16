@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osint System - Sistema de Folha de Pagamento</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-header">
+                <h1><i class="fas fa-shield-alt"></i> Osint System</h1>
+                <p>Sistema de Transparência de Folha de Pagamento</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+            </form>
+            
+            <div id="loginError" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="appPage" class="page">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-shield-alt"></i> Osint System</h1>
+                <nav class="main-nav">
+                    <button class="nav-btn active" data-tab="dashboard">
+                        <i class="fas fa-chart-dashboard"></i> Dashboard
+                    </button>
+                    <button class="nav-btn" data-tab="employees">
+                        <i class="fas fa-users"></i> Funcionários
+                    </button>
+                    <button class="nav-btn" data-tab="payroll">
+                        <i class="fas fa-money-bill-wave"></i> Folha de Pagamento
+                    </button>
+                </nav>
+                <div class="user-menu">
+                    <span id="userInfo" class="user-info"></span>
+                    <button id="logoutBtn" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboardTab" class="tab-content active">
+                <div class="dashboard-header">
+                    <h2>Dashboard - Transparência Salarial</h2>
+                    <div class="dashboard-filters">
+                        <select id="dashboardYear" class="form-select">
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalEmployees">0</h3>
+                            <p>Total de Funcionários</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalPayroll">R$ 0,00</h3>
+                            <p>Folha Total (Mês Atual)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="avgSalary">R$ 0,00</h3>
+                            <p>Salário Médio</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Resumo Mensal - <span id="currentYearDisplay">2024</span></h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="monthlyChart" class="chart-container">
+                                <div class="chart-placeholder">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <p>Carregando dados...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employees Tab -->
+            <div id="employeesTab" class="tab-content">
+                <div class="tab-header">
+                    <h2>Gerenciamento de Funcionários</h2>
+                    <div class="tab-actions">
+                        <input type="text" id="employeeSearch" placeholder="Buscar funcionário..." class="form-input">
+                        <button id="addEmployeeBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Adicionar Funcionário
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nome Completo</th>
+                                <th>Cargo</th>
+                                <th>Departamento</th>
+                                <th>Data de Admissão</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeesTableBody">
+                            <!-- Employee data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="employeesPagination" class="pagination">
+                    <!-- Pagination will be populated here -->
+                </div>
+            </div>
+
+            <!-- Payroll Tab -->
+            <div id="payrollTab" class="tab-content">
+                <div class="tab-header">
+                    <h2>Folha de Pagamento</h2>
+                    <div class="tab-actions">
+                        <select id="payrollMonth" class="form-select">
+                            <option value="">Todos os meses</option>
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                        <select id="payrollYear" class="form-select">
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                        </select>
+                        <button id="addPayrollBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Novo Registro
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Funcionário</th>
+                                <th>Período</th>
+                                <th>Salário Base</th>
+                                <th>Salário Bruto</th>
+                                <th>Descontos</th>
+                                <th>Salário Líquido</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payrollTableBody">
+                            <!-- Payroll data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="payrollPagination" class="pagination">
+                    <!-- Pagination will be populated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Employee Form -->
+    <div id="employeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="employeeModalTitle">Adicionar Funcionário</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="employeeForm" class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="empCode">Código do Funcionário</label>
+                        <input type="text" id="empCode" name="employee_code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empName">Nome Completo</label>
+                        <input type="text" id="empName" name="full_name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="empCpf">CPF</label>
+                        <input type="text" id="empCpf" name="cpf" placeholder="000.000.000-00">
+                    </div>
+                    <div class="form-group">
+                        <label for="empPosition">Cargo</label>
+                        <input type="text" id="empPosition" name="position">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="empDepartment">Departamento</label>
+                        <input type="text" id="empDepartment" name="department">
+                    </div>
+                    <div class="form-group">
+                        <label for="empHireDate">Data de Admissão</label>
+                        <input type="date" id="empHireDate" name="hire_date">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="empBirthDate">Data de Nascimento</label>
+                        <input type="date" id="empBirthDate" name="birth_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="empPhone">Telefone</label>
+                        <input type="tel" id="empPhone" name="phone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="empAddress">Endereço</label>
+                    <textarea id="empAddress" name="address" rows="3"></textarea>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-close">Cancelar</button>
+                <button type="submit" form="employeeForm" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Payroll Form -->
+    <div id="payrollModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="payrollModalTitle">Novo Registro de Folha</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="payrollForm" class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="payEmployee">Funcionário</label>
+                        <select id="payEmployee" name="employee_id" required>
+                            <option value="">Selecione um funcionário</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="payMonth">Mês de Referência</label>
+                        <select id="payMonth" name="reference_month" required>
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="payYear">Ano</label>
+                        <input type="number" id="payYear" name="reference_year" value="2024" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="payBaseSalary">Salário Base</label>
+                        <input type="number" id="payBaseSalary" name="base_salary" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="payOvertimeHours">Horas Extras</label>
+                        <input type="number" id="payOvertimeHours" name="overtime_hours" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="payOvertimeRate">Valor Hora Extra</label>
+                        <input type="number" id="payOvertimeRate" name="overtime_rate" step="0.01" value="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="payBonus">Bonificações</label>
+                        <input type="number" id="payBonus" name="bonus" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="payAllowances">Benefícios</label>
+                        <input type="number" id="payAllowances" name="allowances" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="payOtherDeductions">Outros Descontos</label>
+                        <input type="number" id="payOtherDeductions" name="other_deductions" step="0.01" value="0">
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-close">Cancelar</button>
+                <button type="submit" form="payrollForm" class="btn btn-primary">Calcular e Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
